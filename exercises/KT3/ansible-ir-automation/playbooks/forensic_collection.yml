@@ -1,0 +1,6 @@
+---
+- name: Forensic Artefact Collection
+  hosts: ir-target
+  become: true
+  roles:
+    - forensic_collection

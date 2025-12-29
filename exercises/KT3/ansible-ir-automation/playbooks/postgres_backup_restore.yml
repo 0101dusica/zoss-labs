@@ -1,0 +1,6 @@
+---
+- name: PostgreSQL Backup & Restore Operations
+  hosts: ir-target
+  become: true
+  roles:
+    - postgres_backup_restore

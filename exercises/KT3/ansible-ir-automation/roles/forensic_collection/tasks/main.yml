@@ -1,0 +1,160 @@
+---
+- name: Ensure iproute2 is installed
+  become: true
+  apt:
+    name: iproute2
+    state: present
+    update_cache: true
+
+- name: Create forensic base directory
+  become: true
+  file:
+    path: /var/forensics
+    state: directory
+    mode: '0755'
+
+- name: Set forensic timestamp
+  set_fact:
+    forensic_dir: "/var/forensics/forensic_{{ ansible_date_time.iso8601_basic_short }}"
+
+- name: Create forensic directory structure
+  become: true
+  file:
+    path: "{{ forensic_dir }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - system
+    - users
+    - processes
+    - network
+    - logs
+
+# --- SYSTEM INFO ---
+- name: Collect system information
+  become: true
+  shell: |
+    echo "Hostname: $(hostname)"
+    echo "Date: $(date)"
+    uname -a
+  register: system_info
+
+- name: Save system info
+  copy:
+    content: "{{ system_info.stdout }}"
+    dest: "{{ forensic_dir }}/system/system_info.txt"
+
+# --- USERS ---
+- name: Collect user accounts
+  become: true
+  copy:
+    src: /etc/passwd
+    dest: "{{ forensic_dir }}/users/passwd"
+
+- name: Collect groups
+  become: true
+  copy:
+    src: /etc/group
+    dest: "{{ forensic_dir }}/users/group"
+
+- name: Collect logged in users
+  become: true
+  shell: who
+  register: logged_users
+
+- name: Save logged in users
+  copy:
+    content: "{{ logged_users.stdout }}"
+    dest: "{{ forensic_dir }}/users/logged_users.txt"
+
+# --- PROCESSES ---
+- name: Collect running processes
+  become: true
+  shell: ps aux
+  register: process_list
+
+- name: Save process list
+  copy:
+    content: "{{ process_list.stdout }}"
+    dest: "{{ forensic_dir }}/processes/ps_aux.txt"
+
+# --- NETWORK ---
+- name: Collect network interfaces
+  become: true
+  shell: ip a
+  register: net_if
+
+- name: Save network interfaces
+  copy:
+    content: "{{ net_if.stdout }}"
+    dest: "{{ forensic_dir }}/network/ip_addr.txt"
+
+- name: Collect routing table
+  become: true
+  shell: ip route
+  register: net_route
+
+- name: Save routing table
+  copy:
+    content: "{{ net_route.stdout }}"
+    dest: "{{ forensic_dir }}/network/ip_route.txt"
+
+- name: Collect listening ports
+  become: true
+  shell: ss -tulnp
+  register: ports
+
+- name: Save listening ports
+  copy:
+    content: "{{ ports.stdout }}"
+    dest: "{{ forensic_dir }}/network/open_ports.txt"
+
+# --- LOGS ---
+- name: Copy auth.log if exists
+  become: true
+  copy:
+    src: /var/log/auth.log
+    dest: "{{ forensic_dir }}/logs/auth.log"
+  ignore_errors: true
+
+- name: Copy syslog if exists
+  become: true
+  copy:
+    src: /var/log/syslog
+    dest: "{{ forensic_dir }}/logs/syslog"
+  ignore_errors: true
+
+# --- MANIFEST ---
+- name: Generate forensic manifest
+  copy:
+    dest: "{{ forensic_dir }}/manifest.json"
+    content: |
+      {
+        "host": "{{ inventory_hostname }}",
+        "timestamp": "{{ ansible_date_time.iso8601 }}",
+        "operator": "Dusica Trbovic",
+        "artefacts_path": "{{ forensic_dir }}"
+      }
+
+# --- ARCHIVE + CHECKSUM ---
+- name: Create forensic archive
+  become: true
+  shell: >
+    tar -czf {{ forensic_dir }}.tar.gz -C /var/forensics
+    {{ forensic_dir | basename }}
+
+- name: Generate SHA256 checksum for forensic archive
+  become: true
+  shell: sha256sum {{ forensic_dir }}.tar.gz
+  register: forensic_archive_hash
+
+- name: Save archive checksum
+  copy:
+    content: "{{ forensic_archive_hash.stdout }}\n"
+    dest: "{{ forensic_dir }}.tar.gz.sha256"
+
+- name: Show forensic result
+  debug:
+    msg:
+      - "Forensic artefacts collected in {{ forensic_dir }}"
+      - "Archive created: {{ forensic_dir }}.tar.gz"

@@ -1,0 +1,41 @@
+---
+# Minimal, safe PostgreSQL backup + checksum
+# No psql checks, no pipes, no interactive commands
+
+- name: Ensure backup directory exists
+  become: true
+  file:
+    path: "{{ backup_directory }}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: '0755'
+
+- name: Generate backup filename
+  set_fact:
+    backup_filename: "{{ database_name }}_{{ ansible_date_time.iso8601_basic_short }}.sql"
+
+- name: Create PostgreSQL backup (pg_dump)
+  become: true
+  shell: >
+    sudo -u postgres pg_dump {{ database_name }}
+    > {{ backup_directory }}/{{ backup_filename }}
+  args:
+    executable: /bin/bash
+
+- name: Generate SHA256 checksum
+  stat:
+    path: "{{ backup_directory }}/{{ backup_filename }}"
+    checksum_algorithm: sha256
+  register: backup_checksum
+
+- name: Save checksum file
+  copy:
+    content: "{{ backup_checksum.stat.checksum }}  {{ backup_filename }}\n"
+    dest: "{{ backup_directory }}/{{ backup_filename }}.sha256"
+
+- name: Show backup result
+  debug:
+    msg:
+      - "Backup created: {{ backup_directory }}/{{ backup_filename }}"
+      - "SHA256: {{ backup_checksum.stat.checksum }}"
