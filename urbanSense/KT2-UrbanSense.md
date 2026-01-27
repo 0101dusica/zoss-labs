@@ -14,7 +14,9 @@ Podaci prikupljeni sa senzora prosleđuju se centralnoj komponenti sistema, gde 
 
 Ovakva arhitektonska organizacija omogućava jasnu podelu odgovornosti između komponenti, jednostavno proširenje sistema i prilagođavanje različitim scenarijima korišćenja, bez narušavanja osnovne strukture sistema.
 
-![Arhitektonski dijagram sistema](images/diagram.png)
+<p align="center">
+  <img src="images/diagram.png" alt="Arhitektonski dijagram sistema" width=auto height="200px"/>
+</p>
 
 ## 3 Tok podataka i međusobna komunikacija komponenti
 Tok podataka u sistemu *UrbanSense* započinje na nivou IoT senzora, koji generišu podatke o stanju okruženja u realnom vremenu. Ovi podaci se kontinuirano prosleđuju centralnoj komponenti sistema, čime se obezbeđava pravovremeni prijem informacija sa distribuiranih izvora. Komunikacija između senzora i centralne komponente ostvaruje se putem mehanizma za razmenu poruka, što omogućava efikasan i pouzdan prenos podataka.
