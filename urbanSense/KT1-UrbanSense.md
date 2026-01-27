@@ -4,7 +4,7 @@
   <b>Smart City Environmental Monitoring System</b>
 </p>
 <p align="center">
-  <img src="logo.png" alt="UrbanSense Logo" width=auto height="200px"/>
+  <img src="images/logo.png" alt="UrbanSense Logo" width=auto height="200px"/>
 </p>
 
 # 1. Domen problema i poslovni kontekst
