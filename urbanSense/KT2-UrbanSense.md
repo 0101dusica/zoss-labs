@@ -19,7 +19,7 @@ Ovakva arhitektonska organizacija omogućava jasnu podelu odgovornosti između k
 </p>
 
 # 3. Tok podataka i međusobna komunikacija komponenti
-Tok podataka u sistemu *UrbanSense* započinje na nivou IoT senzora, koji generišu podatke o stanju okruženja u realnom vremenu. Ovi podaci se kontinuirano prosleđuju centralnoj komponenti sistema, čime se obezbeđava pravovremeni prijem informacija sa distribuiranih izvora. Komunikacija između senzora i centralne komponente ostvaruje se putem mehanizma za razmenu poruka, što omogućava efikasan i pouzdan prenos podataka.
+Tok podataka u sistemu *UrbanSense* započinje na nivou IoT senzora, koji generišu podatke o stanju okruženja u realnom vremenu. Ovi podaci se kontinuirano prosleđuju centralnoj komponenti sistema, čime se obezbeđuje pravovremeni prijem informacija sa distribuiranih izvora. Komunikacija između senzora i centralne komponente ostvaruje se putem mehanizma za razmenu poruka, što omogućava efikasan i pouzdan prenos podataka.
 
 Nakon prijema podataka, centralna komponenta sistema vrši njihovu obradu i agregaciju u skladu sa definisanim pravilima sistema. Obrađeni podaci se zatim prosleđuju sloju za skladištenje podataka, gde se trajno čuvaju i postaju dostupni za dalju upotrebu. Na ovaj način obezbeđena je konzistentnost podataka i mogućnost njihovog kasnijeg korišćenja u različitim kontekstima.
 
@@ -30,7 +30,7 @@ Sloj za prikupljanje podataka sa senzora predstavlja ulaznu tačku sistema *Urba
 
 U okviru projekta, senzori ne komuniciraju direktno sa slojem za skladištenje podataka niti sa eksternim sistemima, već isključivo sa centralnom komponentom sistema. Na ovaj način postiže se jasna separacija odgovornosti, gde je sloj za prikupljanje podataka fokusiran isključivo na pouzdano slanje podataka, bez dodatne logike obrade ili validacije.
 
-Komunikacija između senzora i centralne komponente realizovana je korišćenjem mehanizma za razmenu poruka, koji omogućava skalabilnost sistema i toleranciju na privremene prekide u radu pojedinih senzora. Detaljniji razlozi izbora ovog komunikacionog mehanizma biće obrađeni u poglavlju 2.8.
+Komunikacija između senzora i centralne komponente realizovana je korišćenjem mehanizma za razmenu poruka, koji omogućava skalabilnost sistema i toleranciju na privremene prekide u radu pojedinih senzora.
 
 # 5. Centralna obrada i upravljačka logika sistema
 Centralna komponenta sistema *UrbanSense* predstavlja jezgro sistema i zadužena je za obradu, validaciju i agregaciju podataka pristiglih sa senzora. Ova komponenta koordinira komunikaciju između svih ostalih delova sistema i obezbeđuje da podaci budu obrađeni u skladu sa definisanim pravilima projekta.
@@ -44,18 +44,18 @@ Sloj za skladištenje podataka zadužen je za trajno čuvanje obrađenih i agreg
 
 U okviru projekta skladište podataka ne učestvuje direktno u komunikaciji sa senzorima ili eksternim sistemima, već isključivo sarađuje sa centralnom komponentom sistema. Na ovaj način se obezbeđuje dodatni nivo kontrole nad podacima i smanjuje kompleksnost interakcija između komponenti.
 
-Izabrani pristup skladištenju podataka omogućava fleksibilno čuvanje velike količine heterogenih podataka, što je posebno značajno u kontekstu sistema koji obrađuje podatke sa različitih senzora. Razlozi izbora ovog tipa skladišta biće detaljnije objašnjeni u narednim poglavljima.
+Izabrani pristup skladištenju podataka omogućava fleksibilno čuvanje velike količine heterogenih podataka, što je posebno značajno u kontekstu sistema koji obrađuje podatke sa različitih senzora.
 
 # 7. Integracija sa eksternim sistemima
 Sistem *UrbanSense* predviđa integraciju sa eksternim sistemima koji imaju potrebu za pristupom obrađenim i agregiranim podacima. Ovi sistemi mogu predstavljati klijentske aplikacije, analitičke alate ili druge softverske sisteme koji koriste podatke u svrhu daljeg prikaza ili obrade.
 
 Komunikacija sa eksternim sistemima ostvaruje se putem jasno definisanog programskog interfejsa, preko kojeg eksterni sistemi mogu slati zahteve i dobijati odgovore od centralne komponente sistema. Na ovaj način obezbeđena je standardizovana i kontrolisana razmena podataka, bez direktnog pristupa internim komponentama sistema.
 
-Ovakav pristup integraciji omogućava lako proširenje sistema i povezivanje sa različitim klijentima, uz očuvanje stabilnosti i osnovne arhitekture sistema. Detaljniji opis korišćenih tehnologija i komunikacionih mehanizama biće dat u poglavlju 2.8.
+Ovakav pristup integraciji omogućava lako proširenje sistema i povezivanje sa različitim klijentima, uz očuvanje stabilnosti i osnovne arhitekture sistema.
 
 # 8. Tehnologije u kontekstu projekta
 
-## 8.1. MQTT – dubinsko razumevanje i primena u projektu
+## 8.1. MQTT
 
 Message Queuing Telemetry Transport (MQTT) je komunikacioni protokol dizajniran za efikasnu i pouzdanu razmenu poruka u okruženjima sa ograničenim resursima, što ga čini pogodnim za IoT sisteme poput projekta UrbanSense. Za razliku od tradicionalnih modela komunikacije zasnovanih na principu zahtev–odgovor, MQTT koristi publish/subscribe paradigm, u kojoj proizvođači poruka (publishers) objavljuju podatke na određene teme, dok se potrošači (subscribers) pretplaćuju na teme od interesa. Ovakav pristup omogućava visok stepen razdvajanja između komponenti sistema i olakšava skalabilnost komunikacije.
 
@@ -84,9 +84,11 @@ Zahvaljujući navedenim osobinama, MQTT predstavlja prirodan izbor za komunikaci
 ### Ilustracija
 
 ![MQTT Publish/Subscribe Model](images/mqtt.png)
-*Konceptualna ilustracija publish/subscribe modela komunikacije koji koristi MQTT protokol.*
+<p align="center">
+  <i>Konceptualna ilustracija publish/subscribe modela komunikacije koji koristi MQTT protokol.</i>
+</p>
 
-## 8.2. NoSQL baze podataka – dokumentni model i primena u projektu
+## 8.2. NoSQL baze podataka
 
 Sistemi za prikupljanje podataka u IoT okruženjima karakterišu se velikom količinom zapisa, visokom frekvencijom upisa i heterogenom strukturom podataka. Senzori mogu generisati različite tipove merenja, sa promenljivim skupovima atributa, koji se vremenom mogu proširivati ili menjati. U takvim uslovima, klasični relacioni model podataka, zasnovan na strogo definisanim šemama i relacijama, često predstavlja ograničenje u pogledu fleksibilnosti i prilagodljivosti sistema.
 
@@ -94,7 +96,7 @@ NoSQL baze podataka nastaju kao odgovor na potrebe sistema koji obrađuju velike
 
 MongoDB predstavlja dokumentno orijentisanu NoSQL bazu podataka, u kojoj se podaci skladište u obliku dokumenata organizovanih u kolekcije. Dokumenti su najčešće predstavljeni u JSON-sličnom formatu, što omogućava da jedan dokument obuhvati kompletan skup podataka koji logički pripadaju jednom entitetu, kao što su merenja jednog senzora u određenom vremenskom periodu. Na ovaj način se smanjuje potreba za složenim spajanjima podataka i omogućava efikasnije čitanje i obrada podataka.
 
-Jedna od ključnih osobina MongoDB baze jeste njena sposobnost horizontalnog skaliranja. Sistem je dizajniran tako da podrži rad sa velikim brojem zapisa kroz shardovanje podataka i raspodelu opterećenja na više instanci baze. Ovakav dizajn je posebno pogodan za IoT sisteme, gde veliki broj senzora kontinuirano generiše podatke, što dovodi do visokog intenziteta upisa. Istraživanja i empirijske studije ukazuju da MongoDB pokazuje dobre performanse u scenarijima sa velikim brojem operacija upisa i čitanja, što je čest slučaj u realnom vremenu.
+Jedna od ključnih osobina MongoDB baze jeste njena sposobnost horizontalnog skaliranja. Sistem je dizajniran tako da podrži rad sa velikim brojem zapisa kroz shardovanje (horizontalnu particiju) podataka i raspodelu opterećenja na više instanci baze. Ovakav dizajn je posebno pogodan za IoT sisteme, gde veliki broj senzora kontinuirano generiše podatke, što dovodi do visokog intenziteta upisa. Istraživanja i empirijske studije ukazuju da MongoDB pokazuje dobre performanse u scenarijima sa velikim brojem operacija upisa i čitanja, što je čest slučaj u realnom vremenu.
 
 Primena dokumentnog modela u projektu UrbanSense omogućava prirodno mapiranje senzorskih podataka na strukturu baze. Svako merenje ili skup merenja može se predstaviti kao poseban dokument, pri čemu različiti tipovi senzora mogu imati različite atribute bez narušavanja konzistentnosti sistema. Ovakav pristup omogućava jednostavno proširenje sistema dodavanjem novih senzora ili novih tipova podataka, bez potrebe za značajnim izmenama u strukturi skladišta podataka.
 
@@ -122,9 +124,11 @@ Na osnovu navedenih karakteristika, MongoDB predstavlja adekvatan izbor za sloj 
 ### Ilustracija
 
 ![Dokumentni model u MongoDB bazi](images/mongodb.png)
-*Primer dokumentno orijentisanog modela podataka, gde se zapisi skladište kao fleksibilni dokumenti unutar kolekcija.*
+<p align="center">
+  <i>Primer dokumentno orijentisanog modela podataka, gde se zapisi skladište kao fleksibilni dokumenti unutar kolekcija.</i>
+</p>
 
-## 8.3. Go programski jezik – konkurentni model i izvršna struktura
+## 8.3. Go programski jezik
 
 Go programski jezik je dizajniran sa jasnim ciljem da olakša razvoj pouzdanih i skalabilnih sistema koji rade u okruženjima sa velikim brojem istovremenih operacija. Za razliku od tradicionalnih jezika u kojima je konkurentnost dodatni sloj nad osnovnim izvršnim modelom, Go integriše konkurentno programiranje direktno u srž jezika i njegov runtime sistem. Na taj način, konkurentnost postaje fundamentalni princip izvršavanja, a ne samo programska tehnika.
 
@@ -133,8 +137,9 @@ Osnovna ideja konkurentnosti u Go jeziku zasniva se na odvajanju logike izvršav
 Na slici ispod prikazan je konceptualni konkurentni izvršni model Go jezika, koji ilustruje kako se veliki broj gorutina mapira na ograničen broj logičkih procesora i operativno-sistemskih niti, uz potpunu kontrolu runtime sistema.
 
 ![Go concurrency execution model](images/go_concurrency_model.jpg)
-
-*Konceptualni prikaz konkurentnog izvršnog modela Go jezika, u kome se gorutine mapiraju na logičke procesore i operativno-sistemske niti pod upravom runtime sistema.*
+<p align="center">
+  <i>Konceptualni prikaz konkurentnog izvršnog modela Go jezika, u kome se gorutine mapiraju na logičke procesore i operativno-sistemske niti pod upravom runtime sistema.</i>
+</p>
 
 ---
 
@@ -147,9 +152,9 @@ Jedna od ključnih razlika između gorutina i operativno-sistemskih niti jeste n
 Konkurentni model zasnovan na gorutinama omogućava da se veliki broj nezavisnih zadataka izvršava paralelno ili konkurentno, bez potrebe da programer vodi računa o broju dostupnih niti ili procesora. Runtime sistem dinamički upravlja njihovim raspoređivanjem, čime se postiže bolja skalabilnost i stabilnost sistema.
 
 ![Goroutines, processors and OS threads](images/goroutines.png)
-
-*Ilustracija odnosa između gorutina, logičkih procesora i operativno-sistemskih niti u Go konkurentnom modelu.*
-
+<p align="center">
+  <i>Ilustracija odnosa između gorutina, logičkih procesora i operativno-sistemskih niti u Go konkurentnom modelu.</i>
+</p>
 ---
 
 ### Go scheduler i G–M–P model
@@ -161,7 +166,9 @@ Logički procesori predstavljaju izvršne resurse koje scheduler dodeljuje gorut
 Zahvaljujući G–M–P modelu, Go runtime može transparentno da premešta gorutine između niti, da pauzira i nastavlja njihovo izvršavanje, kao i da reaguje na blokirajuće sistemske pozive, bez potrebe za intervencijom programera. Ovaj mehanizam predstavlja osnovu skalabilnosti i performansi Go jezika u konkurentnim okruženjima.
 
 ![Go scheduler G–M–P model](images/go_gmp_model.jpg)
-*Prikaz G–M–P modela koji koristi Go runtime za raspoređivanje gorutina na operativno-sistemske niti.*
+<p align="center">
+  <i>Prikaz G–M–P modela koji koristi Go runtime za raspoređivanje gorutina na operativno-sistemske niti.</i>
+</p>
 
 ---
 
