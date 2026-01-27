@@ -1,11 +1,11 @@
 # KT2 - Arhitektura sistema i pregled tehnologija
 
-## 1 Opšti opis projekta
+# 1. Opšti opis projekta
 Projekat *UrbanSense* predstavlja softverski sistem namenjen prikupljanju, obradi i analizi podataka dobijenih sa distribuiranih IoT senzora u urbanom okruženju. Osnovni cilj sistema je da omogući centralizovano upravljanje i obradu velike količine podataka sa senzora, kao i njihovu dostupnost eksternim sistemima kroz standardizovane interfejse. Na taj način, sistem pruža osnovu za praćenje stanja okruženja i donošenje odluka zasnovanih na prikupljenim podacima.
 
 Sistem je koncipiran tako da omogući kontinuiran prijem podataka sa senzora, njihovu dalju obradu i agregaciju, kao i pouzdano skladištenje radi kasnijeg korišćenja. Poseban akcenat stavljen je na modularnost i jasnu podelu odgovornosti između komponenti sistema, čime se obezbeđuje skalabilnost i lakša integracija sa spoljnim aplikacijama. Projekat ne obuhvata razvoj korisničkog interfejsa, već se fokusira na serversku stranu sistema i mehanizme razmene podataka sa eksternim klijentima.
 
-## 2 Arhitektura sistema na visokom nivou
+# 2. Arhitektura sistema na visokom nivou
 Arhitektura sistema *UrbanSense* zasniva se na jasno definisanim komponentama koje zajedno omogućavaju prikupljanje, obradu i distribuciju podataka sa IoT senzora. Na slici je prikazan arhitektonski dijagram sistema koji ilustruje glavne komponente projekta i njihove međusobne odnose, kao i tokove podataka između njih.
 
 Centralnu ulogu u arhitekturi ima **centralna komponenta sistema** UrbanSense, koja predstavlja jezgro sistema i zadužena je za koordinaciju komunikacije između ostalih komponenti. Ova komponenta prima podatke sa IoT senzora, upravlja njihovom daljom obradom i obezbeđuje pristup obrađenim informacijama eksternim sistemima putem definisanih interfejsa.
@@ -18,44 +18,44 @@ Ovakva arhitektonska organizacija omogućava jasnu podelu odgovornosti između k
   <img src="images/diagram.png" alt="Arhitektonski dijagram sistema" width=auto height="200px"/>
 </p>
 
-## 3 Tok podataka i međusobna komunikacija komponenti
+# 3. Tok podataka i međusobna komunikacija komponenti
 Tok podataka u sistemu *UrbanSense* započinje na nivou IoT senzora, koji generišu podatke o stanju okruženja u realnom vremenu. Ovi podaci se kontinuirano prosleđuju centralnoj komponenti sistema, čime se obezbeđava pravovremeni prijem informacija sa distribuiranih izvora. Komunikacija između senzora i centralne komponente ostvaruje se putem mehanizma za razmenu poruka, što omogućava efikasan i pouzdan prenos podataka.
 
 Nakon prijema podataka, centralna komponenta sistema vrši njihovu obradu i agregaciju u skladu sa definisanim pravilima sistema. Obrađeni podaci se zatim prosleđuju sloju za skladištenje podataka, gde se trajno čuvaju i postaju dostupni za dalju upotrebu. Na ovaj način obezbeđena je konzistentnost podataka i mogućnost njihovog kasnijeg korišćenja u različitim kontekstima.
 
 Pored obrade i skladištenja podataka, sistem omogućava komunikaciju sa eksternim sistemima putem programskog interfejsa. Eksterni sistemi mogu slati zahteve ka centralnoj komponenti sistema radi pristupa obrađenim i agregiranim podacima, kao i dobijati odgovore u skladu sa definisanim pravilima sistema. Ovakav tok komunikacije omogućava integraciju sistema *UrbanSense* sa različitim klijentskim aplikacijama i spoljnim servisima, uz jasno definisane granice odgovornosti između komponenti.
 
-## 4 Sloj za prikupljanje podataka sa senzora
+# 4. Sloj za prikupljanje podataka sa senzora
 Sloj za prikupljanje podataka sa senzora predstavlja ulaznu tačku sistema *UrbanSense* i zadužen je za prijem podataka generisanih od strane distribuiranih IoT senzora. Ova komponenta omogućava kontinuirano i asinhrono slanje podataka ka centralnoj komponenti sistema, čime se obezbeđuje efikasan prijem informacija iz fizičkog okruženja.
 
 U okviru projekta, senzori ne komuniciraju direktno sa slojem za skladištenje podataka niti sa eksternim sistemima, već isključivo sa centralnom komponentom sistema. Na ovaj način postiže se jasna separacija odgovornosti, gde je sloj za prikupljanje podataka fokusiran isključivo na pouzdano slanje podataka, bez dodatne logike obrade ili validacije.
 
 Komunikacija između senzora i centralne komponente realizovana je korišćenjem mehanizma za razmenu poruka, koji omogućava skalabilnost sistema i toleranciju na privremene prekide u radu pojedinih senzora. Detaljniji razlozi izbora ovog komunikacionog mehanizma biće obrađeni u poglavlju 2.8.
 
-## 5 Centralna obrada i upravljačka logika sistema
+# 5. Centralna obrada i upravljačka logika sistema
 Centralna komponenta sistema *UrbanSense* predstavlja jezgro sistema i zadužena je za obradu, validaciju i agregaciju podataka pristiglih sa senzora. Ova komponenta koordinira komunikaciju između svih ostalih delova sistema i obezbeđuje da podaci budu obrađeni u skladu sa definisanim pravilima projekta.
 
 Nakon prijema podataka, centralna komponenta vrši osnovnu obradu i pripremu podataka za dalju upotrebu, uključujući objedinjavanje podataka iz različitih izvora i njihovo strukturiranje. Na ovaj način sistem omogućava konzistentan prikaz podataka bez obzira na izvor ili učestalost njihovog generisanja.
 
 Pored obrade podataka, centralna komponenta sistema odgovorna je i za komunikaciju sa eksternim sistemima putem programskog interfejsa. Ona predstavlja jedinu tačku pristupa sistemu UrbanSense za spoljne klijente, čime se obezbeđuje kontrolisan i centralizovan pristup funkcionalnostima sistema.
 
-## 6 Sloj za skladištenje podataka
+# 6. Sloj za skladištenje podataka
 Sloj za skladištenje podataka zadužen je za trajno čuvanje obrađenih i agregiranih podataka unutar sistema *UrbanSense*. Ova komponenta omogućava pouzdano skladištenje podataka i njihovu dostupnost za kasnije analize, izveštavanje i pristup od strane eksternih sistema.
 
 U okviru projekta skladište podataka ne učestvuje direktno u komunikaciji sa senzorima ili eksternim sistemima, već isključivo sarađuje sa centralnom komponentom sistema. Na ovaj način se obezbeđuje dodatni nivo kontrole nad podacima i smanjuje kompleksnost interakcija između komponenti.
 
 Izabrani pristup skladištenju podataka omogućava fleksibilno čuvanje velike količine heterogenih podataka, što je posebno značajno u kontekstu sistema koji obrađuje podatke sa različitih senzora. Razlozi izbora ovog tipa skladišta biće detaljnije objašnjeni u narednim poglavljima.
 
-## 7 Integracija sa eksternim sistemima
+# 7. Integracija sa eksternim sistemima
 Sistem *UrbanSense* predviđa integraciju sa eksternim sistemima koji imaju potrebu za pristupom obrađenim i agregiranim podacima. Ovi sistemi mogu predstavljati klijentske aplikacije, analitičke alate ili druge softverske sisteme koji koriste podatke u svrhu daljeg prikaza ili obrade.
 
 Komunikacija sa eksternim sistemima ostvaruje se putem jasno definisanog programskog interfejsa, preko kojeg eksterni sistemi mogu slati zahteve i dobijati odgovore od centralne komponente sistema. Na ovaj način obezbeđena je standardizovana i kontrolisana razmena podataka, bez direktnog pristupa internim komponentama sistema.
 
 Ovakav pristup integraciji omogućava lako proširenje sistema i povezivanje sa različitim klijentima, uz očuvanje stabilnosti i osnovne arhitekture sistema. Detaljniji opis korišćenih tehnologija i komunikacionih mehanizama biće dat u poglavlju 2.8.
 
-## 8 Tehnologije u kontekstu projekta
+# 8. Tehnologije u kontekstu projekta
 
-## 8.1 MQTT – dubinsko razumevanje i primena u projektu
+## 8.1. MQTT – dubinsko razumevanje i primena u projektu
 
 Message Queuing Telemetry Transport (MQTT) je komunikacioni protokol dizajniran za efikasnu i pouzdanu razmenu poruka u okruženjima sa ograničenim resursima, što ga čini pogodnim za IoT sisteme poput projekta UrbanSense. Za razliku od tradicionalnih modela komunikacije zasnovanih na principu zahtev–odgovor, MQTT koristi publish/subscribe paradigm, u kojoj proizvođači poruka (publishers) objavljuju podatke na određene teme, dok se potrošači (subscribers) pretplaćuju na teme od interesa. Ovakav pristup omogućava visok stepen razdvajanja između komponenti sistema i olakšava skalabilnost komunikacije.
 
@@ -86,7 +86,7 @@ Zahvaljujući navedenim osobinama, MQTT predstavlja prirodan izbor za komunikaci
 ![MQTT Publish/Subscribe Model](images/mqtt.png)
 *Konceptualna ilustracija publish/subscribe modela komunikacije koji koristi MQTT protokol.*
 
-## 8.2 NoSQL baze podataka – dokumentni model i primena u projektu
+## 8.2. NoSQL baze podataka – dokumentni model i primena u projektu
 
 Sistemi za prikupljanje podataka u IoT okruženjima karakterišu se velikom količinom zapisa, visokom frekvencijom upisa i heterogenom strukturom podataka. Senzori mogu generisati različite tipove merenja, sa promenljivim skupovima atributa, koji se vremenom mogu proširivati ili menjati. U takvim uslovima, klasični relacioni model podataka, zasnovan na strogo definisanim šemama i relacijama, često predstavlja ograničenje u pogledu fleksibilnosti i prilagodljivosti sistema.
 
@@ -124,7 +124,7 @@ Na osnovu navedenih karakteristika, MongoDB predstavlja adekvatan izbor za sloj 
 ![Dokumentni model u MongoDB bazi](images/mongodb.png)
 *Primer dokumentno orijentisanog modela podataka, gde se zapisi skladište kao fleksibilni dokumenti unutar kolekcija.*
 
-## 8.3 Go programski jezik – konkurentni model i izvršna struktura
+## 8.3. Go programski jezik – konkurentni model i izvršna struktura
 
 Go programski jezik je dizajniran sa jasnim ciljem da olakša razvoj pouzdanih i skalabilnih sistema koji rade u okruženjima sa velikim brojem istovremenih operacija. Za razliku od tradicionalnih jezika u kojima je konkurentnost dodatni sloj nad osnovnim izvršnim modelom, Go integriše konkurentno programiranje direktno u srž jezika i njegov runtime sistem. Na taj način, konkurentnost postaje fundamentalni princip izvršavanja, a ne samo programska tehnika.
 
