@@ -67,6 +67,11 @@ U okviru projekta UrbanSense, MQTT protokol se koristi kao osnovni komunikacioni
 
 Zahvaljujući navedenim osobinama, MQTT predstavlja prirodan izbor za komunikacioni sloj sistema UrbanSense, jer omogućava skalabilan, efikasan i pouzdan prenos podataka iz fizičkog okruženja ka centralnom delu sistema, uz minimalne mrežne i hardverske zahteve.
 
+![MQTT Publish/Subscribe Model](images/mqtt.png)
+<p align="center">
+  <i>Konceptualna ilustracija publish/subscribe modela komunikacije koji koristi MQTT protokol.</i>
+</p>
+
 ### Reference
 
 - MQTT Protocol for the IoT – Review Paper  
@@ -81,12 +86,6 @@ Zahvaljujući navedenim osobinama, MQTT predstavlja prirodan izbor za komunikaci
 - Open-Source MQTT-Based End-to-End IoT System for Smart City Scenarios  
   https://www.mdpi.com/1999-5903/14/2/57
 
-### Ilustracija
-
-![MQTT Publish/Subscribe Model](images/mqtt.png)
-<p align="center">
-  <i>Konceptualna ilustracija publish/subscribe modela komunikacije koji koristi MQTT protokol.</i>
-</p>
 
 ## 8.2. NoSQL baze podataka
 
@@ -103,6 +102,11 @@ Primena dokumentnog modela u projektu UrbanSense omogućava prirodno mapiranje s
 Iako dokumentni NoSQL pristup donosi visok stepen fleksibilnosti, on podrazumeva i određene kompromisne odluke. Nedostatak stroge šeme i relacione kontrole integriteta zahteva da se deo logike validacije i konzistentnosti podataka prebaci na aplikativni sloj sistema. U kontekstu projekta UrbanSense, ovaj pristup je prihvatljiv, s obzirom na to da centralna komponenta sistema već preuzima ulogu obrade i validacije podataka pre njihovog skladištenja.
 
 Na osnovu navedenih karakteristika, MongoDB predstavlja adekvatan izbor za sloj za skladištenje podataka u okviru sistema UrbanSense. Njena fleksibilnost, skalabilnost i prilagođenost radu sa velikim količinama heterogenih senzorskih podataka omogućavaju pouzdano i efikasno skladištenje informacija, uz podršku daljem razvoju i proširenju sistema.
+
+![Dokumentni model u MongoDB bazi](images/mongodb.png)
+<p align="center">
+  <i>Primer dokumentno orijentisanog modela podataka, gde se zapisi skladište kao fleksibilni dokumenti unutar kolekcija.</i>
+</p>
 
 ### Reference
 
@@ -121,12 +125,6 @@ Na osnovu navedenih karakteristika, MongoDB predstavlja adekvatan izbor za sloj 
 - When to Use MongoDB Over a Relational Database (community discussion)  
   https://softwareengineering.stackexchange.com/questions/54373/when-would-someone-use-mongodb-or-similar-over-a-relational-dbms
 
-### Ilustracija
-
-![Dokumentni model u MongoDB bazi](images/mongodb.png)
-<p align="center">
-  <i>Primer dokumentno orijentisanog modela podataka, gde se zapisi skladište kao fleksibilni dokumenti unutar kolekcija.</i>
-</p>
 
 ## 8.3. Go programski jezik
 
@@ -141,7 +139,6 @@ Na slici ispod prikazan je konceptualni konkurentni izvršni model Go jezika, ko
   <i>Konceptualni prikaz konkurentnog izvršnog modela Go jezika, u kome se gorutine mapiraju na logičke procesore i operativno-sistemske niti pod upravom runtime sistema.</i>
 </p>
 
----
 
 ### Goroutines kao osnovna konkurentna jedinica
 
@@ -155,7 +152,6 @@ Konkurentni model zasnovan na gorutinama omogućava da se veliki broj nezavisnih
 <p align="center">
   <i>Ilustracija odnosa između gorutina, logičkih procesora i operativno-sistemskih niti u Go konkurentnom modelu.</i>
 </p>
----
 
 ### Go scheduler i G–M–P model
 
@@ -170,17 +166,15 @@ Zahvaljujući G–M–P modelu, Go runtime može transparentno da premešta goru
   <i>Prikaz G–M–P modela koji koristi Go runtime za raspoređivanje gorutina na operativno-sistemske niti.</i>
 </p>
 
----
 
 ### Go channels i model razmene poruka
 
 Pored gorutina, Go uvodi i kanale kao osnovni mehanizam za bezbednu komunikaciju između konkurentnih tokova izvršavanja. Kanali omogućavaju razmenu podataka između gorutina bez potrebe za eksplicitnim korišćenjem zaključavanja ili deljene memorije. Ovakav pristup zasniva se na principima message-passing konkurentnosti i inspiriše se CSP (Communicating Sequential Processes) modelom.
 
-Korišćenjem kanala, Go podstiče stil programiranja u kome gorutine međusobno komuniciraju slanjem poruka, umesto direktnim deljenjem podataka. Time se smanjuje rizik od trka podataka, nekonzistentnih stanja i složenih sinhronizacionih problema. Runtime sistem obezbeđuje da se operacije nad kanalima izvršavaju bezbedno i efikasno, čak i u prisustvu velikog broja gorutina.
+Korišćenjem kanala, Go podstiče stil programiranja u kome gorutine međusobno komuniciraju slanjem poruka, umesto direktnim deljenjem podataka. Time se smanjuje rizik od trka za podacima, nekonzistentnih stanja i složenih sinhronizacionih problema. Runtime sistem obezbeđuje da se operacije nad kanalima izvršavaju bezbedno i efikasno, čak i u prisustvu velikog broja gorutina.
 
 Kanali, u kombinaciji sa gorutinama i scheduler-om, čine osnovu Go konkurentnog modela i omogućavaju izgradnju robusnih i skalabilnih sistema sa jasno definisanim tokovima komunikacije.
 
----
 
 ### Upravljanje memorijom: stack growth i garbage collector
 
@@ -189,6 +183,12 @@ Go runtime obuhvata i mehanizme za automatsko upravljanje memorijom, koji dodatn
 Pored dinamičkog upravljanja stekom, Go koristi i ugrađeni garbage collector, dizajniran sa fokusom na nisku latenciju i minimalne pauze u izvršavanju programa. Garbage collector radi paralelno sa aplikacijom i prilagođen je konkurentnim sistemima, čime se omogućava stabilan rad i predvidivo ponašanje programa čak i pri intenzivnom upravljanju memorijom.
 
 Zajedno, ovi mehanizmi čine Go runtime kompletnim izvršnim okruženjem koje podržava konkurentnost, efikasno upravljanje resursima i jednostavniji razvoj kompleksnih sistema.
+
+### Go jezik u projektu UrbanSense
+
+Iako je prethodni deo fokusiran na unutrašnju strukturu i izvršni model Go jezika, navedene karakteristike imaju direktan uticaj na njegovu primenu u okviru projekta UrbanSense. Sistem je koncipiran tako da istovremeno obrađuje veliki broj nezavisnih tokova podataka koji potiču sa distribuiranih IoT senzora, što zahteva efikasan konkurentni model i stabilno upravljanje sistemskim resursima. Go jezik, sa ugrađenom podrškom za konkurentnost kroz gorutine, scheduler i kanale, omogućava da se ovakvi tokovi podataka modeluju na prirodan i čitljiv način, bez dodatne složenosti u implementaciji.
+
+Pored konkurentnog modela, Go runtime obezbeđuje predvidivo ponašanje sistema pod opterećenjem, zahvaljujući dinamičkom raspoređivanju gorutina i mehanizmima upravljanja memorijom sa niskom latencijom. Ovakve osobine čine Go pogodnim za serverske komponente sistema UrbanSense, gde je neophodna pouzdana obrada podataka u realnom vremenu, skalabilnost i otpornost na varijabilno opterećenje. Iz tog razloga, Go je izabran kao osnovni programski jezik centralne komponente sistema, jer omogućava usklađivanje arhitektonskih zahteva projekta sa efikasnim i robusnim izvršnim modelom.
 
 ### Reference
 
