@@ -1,0 +1,59 @@
+Kontrolna Tacka 3
+
+1. Praktican napad i ranjivosti nad komponentama (2 dovoljne)
+2. Pretnja (na prvu tacku se vratimo i vidimo sta je to od podataka ranjivo i kkao, onda opisemo koji bebednostni cilj je porusen (vratimo se na KT1 read me vidimo sta je poruseno a da smo smatrali kao bitan bezbednosni deo razvoja))
+
+// Stablo Napada
+Petenja / Napad / Mitigacija // Teorijski (i 2 prakicna)
+
+Pretnja je zapravo to sto smo izabrali prakticno a onda na osnovu toga krecemo sa iszborom i ostalih u tom skupu
+Primer je pristup zdravstvenim podacima kao pretnja
+
+3. Teorijski Napadi (stabla, napadi i ranjivosti (treba opisati sta to ne postoji u komponenti zbog cega dolazi do ranjivosti zapravo))
+4. Mitigacija (prakticna (samo za dve prakticne) i teorijska za sve ostale)
+
+
+// Snimiti video napada, nakon toga mitigacije nad istom pretnjom u sistemu
+// Opis svakog cvora u stablu (oznaciti nekim ID-jevima pa ispod stabla opisivati)
+// GIT code / ranjiv i mitigacija, moze 2 odvojene grane ili 2 odvojena foldera ?
+
+
+
+------------Plan rada------------
+
+FAZA 1 — Izbor praktične pretnje (temelj svega)
+FAZA 2 — Definisanje 2 praktična napada
+    Za svaki napad definišeš:
+    Koja komponenta je ranjiva?
+    Koja ranjivost postoji?
+    Kako se napad izvršava?
+    Koji bezbednosni cilj je narušen (Confidentiality / Integrity / Availability)?
+FAZA 3 — Izrada stabla napada
+    GLAVNA PRETNJA
+    → Napad 1
+    → Napad 2
+    → Napad 3 (teorijski)
+    → Napad 4 (teorijski)
+    Primer:
+        N0: Neautorizovan pristup podacima
+        N1: SQL Injection
+        N2: Brute force
+        N3: Krađa sesije
+FAZA 4 — Teorijski napadi
+    Obavezno opisuješ:
+        Koja ranjivost ne postoji u komponenti
+        Zašto je sistem ranjiv
+        Koji cilj je porušen
+        Kako bi izgledala mitigacija
+FAZA 5 — Mitigacije
+    Za 2 praktična napada:
+        Implementiraš zaštitu
+            Snimaš video
+            Pokazuješ razliku pre/posle
+    Za ostale:
+        Teorijski opis mitigacije
+
+Git organizacija
+    folder:
+        /vulnerable
+        /mitigated

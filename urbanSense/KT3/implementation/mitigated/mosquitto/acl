@@ -1,0 +1,3 @@
+user sensor001
+topic read sensors/+/data
+topic write sensors/sensor001/data
