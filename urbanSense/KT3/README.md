@@ -16,10 +16,14 @@ KT3 obuhvata:
 
 ## Glavna pretnja (high-level)
 
-**[TBD]** Glavna pretnja se odnosi na ugrožavanje pouzdanosti i integriteta sistema kroz neadekvatno zaštićenu komunikaciju i/ili neadekvatnu konfiguraciju servisnih komponenti.
-Pretnja je mapirana na ključne bezbednosne ciljeve (integritet i dostupnost), kao i na osetljive resurse sistema (npr. podaci sa senzora i sistem za alarmiranje).
+Glavna pretnja u okviru UrbanSense sistema odnosi se na kompromitaciju pouzdanosti rada sistema kroz kombinaciju neadekvatno zaštićene komunikacije i nedostatka kontrola potrošnje resursa na servisnim komponentama. U praksi, to omogućava neautorizovanim akterima da (1) ubace lažne senzorske podatke u sistem i naruše integritet podataka koji se koriste kao izvor istine, ili da (2) degradiraju dostupnost ključnih servisa slanjem prevelikih ili previše učestalih zahteva, čime se otežava ili onemogućava obrada legitimnih merenja.
 
-Detaljan opis: **[TBD]**
+Pretnja je mapirana na sledeće osetljive resurse i bezbednosne ciljeve:
+- **Podaci sa senzora** i njihova obrada: primarno je ugrožen **integritet**, jer lažne poruke mogu dovesti do pogrešnih zaključaka i odluka.
+- **Sistem za alarmiranje i obaveštavanje**: integritet merenja direktno utiče na tačnost alarmiranja, dok degradacija servisa ugrožava blagovremenu reakciju.
+- **Dostupnost pipeline-a (MQTT broker i Go API)**: primarno je ugrožena **dostupnost**, jer DoS scenariji mogu prekinuti prijem i obradu podataka ili značajno povećati latenciju.
+
+U okviru KT3, ova glavna pretnja je razložena kroz četiri napada: dva praktična (MQTT neautorizovan publish i DoS nad Go API), kao i dva teorijska napada zasnovana na realnim CVE zapisima (request smuggling u Go `net/http` i DoS nad Mosquitto brokerom kroz crafted CONNECT paket). Detaljna razrada, mitigacije i retest nalaze se u odgovarajućim `exploitX.md` fajlovima i u stablu napada (`attack_tree.md`).
 
 ---
 
@@ -34,7 +38,7 @@ U okviru KT3 analizirana su 4 napada:
 
 Dokument: `exploits/exploit1.md`
 
-### Praktični napad 2 - DoS nad Go API servisom (missing timeouts / resource exhaustion)
+### Praktični napad 2 - DoS nad Go API servisom (unbounded request body / resource exhaustion)
 - **Cilj:** demonstracija narušavanja dostupnosti kroz zadržavanje konekcija / iscrpljivanje resursa usled neadekvatnih timeout podešavanja i ograničenja.
 - **Uticaj:** degradacija performansi ili pad API servisa, prekid obrade i prijema podataka.
 - **Status:** Implementirano (ranjivo + mitigovano).
@@ -102,24 +106,4 @@ U stablu su svi čvorovi označeni jedinstvenim ID-jevima (npr. `N0`, `N1`, `N1.
 ## Reference (osnovne)
 
 > Svaki `exploitX.md` sadrži posebnu listu referenci relevantnih za konkretan napad.
-> Ispod su navedene ključne reference koje se koriste kao osnova za izbor tema napada.
-
-- MITRE CWE-306: Missing Authentication for Critical Function  
-  https://cwe.mitre.org/data/definitions/306.html
-
-- Mosquitto konfiguracija (auth/ACL podešavanja) – `mosquitto.conf` man page  
-  https://mosquitto.org/man/mosquitto-conf-5.html
-
-- Go `net/http` package dokumentacija (timeout podešavanja na serveru)  
-  https://pkg.go.dev/net/http
-
-- Go issue diskusija o `ReadHeaderTimeout` i slowloris scenariju  
-  https://github.com/golang/go/issues/24138
-
-- CVE-2025-22871 (Go `net/http` – request smuggling related behavior)  
-  https://nvd.nist.gov/vuln/detail/CVE-2025-22871
-
-- Mosquitto security advisory (CVE-2017-7651 / crafted CONNECT -> DoS)  
-  https://mosquitto.org/blog/2018/02/security-advisory-cve-2017-7651-cve-2017-7652/
-
 ---
